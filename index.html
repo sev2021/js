@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * { font-family: Arial, sans-serif; font-size: 1.4rem;}
+        b {
+            display: inline-block;
+            width: 38px;
+            background-color: #9ce;
+            margin: 1px -3px;
+            text-align: center;
+        }
+    </style>
+
+</head>
+<body>
+
+<b f="0">&nbsp;</b>
+<b f="1">&nbsp;</b>
+<b f="2">&nbsp;</b><br/>
+<b f="3">&nbsp;</b>
+<b f="4">&nbsp;</b>
+<b f="5">&nbsp;</b><br/>
+<b f="6">&nbsp;</b>
+<b f="7">&nbsp;</b>
+<b f="8">&nbsp;</b>
+
+<script>
+    let arr = [0,0,0,0,0,0,0,0,0];
+    let arrWin = [7,56,73,84,146,273,292,448]; //bitwise
+    let move = 1;
+    let x_s = 0;
+    let o_s = 0;
+    let clicked;
+    let finalResult = "This time its draw!";
+
+    // game starts here
+    function playGame(){
+        clicked = parseInt(this.getAttribute('f'));
+        if(arr[clicked] == 1) return;  // only one click per field
+
+        arr[clicked] = 1;  //  addin next move
+        move%2? o_s += 2 ** clicked: x_s += 2 ** clicked;
+        this.innerHTML = ["O", "X"][move%2];
+
+        arrWin.forEach(  // check winning results
+            item => {
+                if ((x_s & item) == item) {  //bitwise check
+                    finalResult = "This time O wins!";
+                    move = 9;
+                    makeRed(item);
+                }
+                if ((o_s & item) == item)  {  //bitwise check
+                    finalResult = "This time X wins!";
+                    move = 9;
+                    makeRed(item);
+                }
+            }
+        )
+        console.log(move);
+        
+        if(move++ > 8) {
+            console.log(finalResult);
+            arr = [1,1,1,1,1,1,1,1,1];
+        }
+        
+        //this.style.backgroundColor = "red";
+    }
+
+    function makeRed(fieldWin){
+        console.log(fieldWin);
+        document.querySelectorAll("b").forEach(
+            (item, index) => {
+                fieldBit = (2**index)   //bitwise check
+                if((fieldWin & fieldBit) == fieldBit) {
+                    item.style.backgroundColor = "red"
+                }
+            }
+        );
+    }
+
+
+    document.querySelectorAll("b").forEach(
+        item => item.addEventListener("click", playGame)
+    );
+
+</script>
+</body>
+</html>

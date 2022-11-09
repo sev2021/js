@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Event Listener passing THIS</title>
+</head>
+<body>
+    <div>CLICK ME</div>
+    <script>
+        function chColor() {this.style.color = "red";}
+
+        document.querySelector("div").addEventListener("click", chColor)
+    </script>
+</body>
+</html>
